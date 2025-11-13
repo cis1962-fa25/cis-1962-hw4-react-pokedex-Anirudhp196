@@ -69,3 +69,9 @@ export interface BoxCardProps {
   onEdit: (entry: BoxEntry) => void;
   onDelete: (id: string) => void;
 }
+
+// Standard API error response
+export interface ApiError {
+  code: string; // Error code (e.g., "UNAUTHORIZED")
+  message: string; // Human-readable error message
+}
