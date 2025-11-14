@@ -1,6 +1,6 @@
 import type { Pokemon, BoxEntry, InsertBoxEntry, UpdateBoxEntry } from '../types/types';
 
-const BASE_URL = 'https://hw4.cis1962.esinx.net/api/';
+const BASE_URL = 'https://hw4.cis1962.esinx.net/api';
 const JWT_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJwZW5ua2V5IjoiYW5pcDA2IiwiaWF0IjoxNzU5MDk4MjE4LCJpc3MiOiJlZHU6dXBlbm46c2VhczpjaXMxOTYyIiwiYXVkIjoiZWR1OnVwZW5uOnNlYXM6Y2lzMTk2MiIsImV4cCI6MTc2NDI4MjIxOH0.RzQA2mNAyY8a6JotbKcNkNyJazVuBP8ZNg8LZESQf2A';
 
 export default class PokemonAPI {
@@ -16,7 +16,7 @@ export default class PokemonAPI {
     // Pokemon Endpoints
 
     async getPokemonList(limit: number, offset: number): Promise<Pokemon[]> {
-        const response = await fetch(`${this.baseUrl}pokemon/?limit=${limit}&offset=${offset}`);
+        const response = await fetch(`${this.baseUrl}/pokemon/?limit=${limit}&offset=${offset}`);
         if(!response.ok) {
             throw new Error(`Error fetching pokemon list: ${response.statusText}`);
         }

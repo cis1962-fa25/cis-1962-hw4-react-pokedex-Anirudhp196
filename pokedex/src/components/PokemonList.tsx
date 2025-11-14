@@ -33,30 +33,29 @@ function PokemonList() {
 
     const handleCardClick = async(name: string) => {
         try {
-            setLoading(true);
+            console.log('Clicking card for:', name);
             const data = await api.getPokemonByName(name);
+            console.log('Fetched data:', data);
             setSelectedPokemon(data);
         } catch (error) {
             console.error('Error fetching pokemon details:', error);
-        } finally {
-            setLoading(false);
         }
     };
 
     return (
         <div className="min-h-screen bg-gray-50 py-8">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-                <div className="text-center mb-8">
-                    <h1 className="text-4xl font-bold text-gray-900 mb-2">Pokédex</h1>
-                    <p className="text-gray-600">Explore and catch Pokémon</p>
+                <div className="text-center mb-8 w-full">
+                    <h1 className="text-5xl font-bold text-gray-900 mb-2 w-full" style={{ fontFamily: 'Georgia, "Times New Roman", serif', letterSpacing: '2px', textAlign: 'center' }}>Pokédex</h1>
+                    <p className="text-lg text-gray-600 w-full" style={{ fontFamily: 'Trebuchet MS, Arial, sans-serif', fontSize: '18px', textAlign: 'center' }}>Explore and catch Pokémon</p>
                 </div>
 
-                {loading && <div className="text-center py-8"><p className="text-lg text-gray-600">Loading...</p></div>}
+                {loading && <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh', width: '100%' }}><p style={{ fontFamily: 'Trebuchet MS, Arial, sans-serif', fontSize: '20px', color: '#6b7280' }}>Loading...</p></div>}
+
                 {error && <div className="text-center py-4"><p className="text-lg text-red-600 bg-red-50 p-4 rounded">{error}</p></div>}
 
                 {!loading && !error && (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '24px', justifyContent: 'center' }}>
                         {pokemon.map((p) => (
                             <PokemonCard
                                 key={p.name}
@@ -67,22 +66,68 @@ function PokemonList() {
                     </div>
                 )}
 
-                <div className="flex gap-4 justify-center mt-8">
+                <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', marginTop: '32px' }}>
                     <button
                         onClick={() => setCurrentPage((prev) => Math.max(0, prev - 1))}
                         disabled={currentPage === 0}
-                        className="px-6 py-2 bg-gray-400 hover:bg-gray-500 text-white rounded-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        style={{
+                            padding: '12px 24px',
+                            backgroundColor: currentPage === 0 ? '#9ca3af' : '#4b5563',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '8px',
+                            fontWeight: '600',
+                            fontSize: '16px',
+                            cursor: currentPage === 0 ? 'not-allowed' : 'pointer',
+                            opacity: currentPage === 0 ? 0.5 : 1,
+                            transition: 'all 0.3s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                            if (currentPage !== 0) {
+                                e.currentTarget.style.backgroundColor = '#5a6575';
+                            }
+                        }}
+                        onMouseLeave={(e) => {
+                            if (currentPage !== 0) {
+                                e.currentTarget.style.backgroundColor = '#4b5563';
+                            }
+                        }}
                     >
-                        Previous
+                        ← Previous
                     </button>
-                    <span className="px-6 py-2 bg-gray-200 rounded-lg font-semibold text-gray-700">
+                    <span style={{
+                        padding: '12px 24px',
+                        backgroundColor: '#e5e7eb',
+                        borderRadius: '8px',
+                        fontWeight: '600',
+                        fontSize: '16px',
+                        color: '#374151',
+                        display: 'flex',
+                        alignItems: 'center'
+                    }}>
                         Page {currentPage + 1}
                     </span>
                     <button
                         onClick={() => setCurrentPage((prev) => prev + 1)}
-                        className="px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-semibold transition-colors"
+                        style={{
+                            padding: '12px 24px',
+                            backgroundColor: '#3b82f6',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '8px',
+                            fontWeight: '600',
+                            fontSize: '16px',
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = '#2563eb';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = '#3b82f6';
+                        }}
                     >
-                        Next
+                        Next →
                     </button>
                 </div>
 
