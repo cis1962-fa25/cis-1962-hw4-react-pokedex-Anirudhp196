@@ -5,9 +5,10 @@ import '../styles/modal.css';
 interface PokemonDetailProps {
     pokemon: Pokemon;
     onClose: () => void;
+    onCatch: (pokemonID: number) => void;
 }
 
-function PokemonDetail({ pokemon, onClose }: PokemonDetailProps) {
+function PokemonDetail({ pokemon, onClose, onCatch }: PokemonDetailProps) {
     const modalRef = useRef<HTMLDivElement>(null);
     const closeRef = useRef<HTMLSpanElement>(null);
 
@@ -40,6 +41,10 @@ function PokemonDetail({ pokemon, onClose }: PokemonDetailProps) {
             window.onclick = null;
         };
     }, [onClose]);
+
+    const onCatchClick = () => {
+        onCatch(pokemon.id);
+    }
 
     return (
         <div id="pokemonModal" className="modal" ref={modalRef} onClick={(e) => {
@@ -122,6 +127,26 @@ function PokemonDetail({ pokemon, onClose }: PokemonDetailProps) {
                             </span>
                         ))}
                     </div>
+                </div>
+
+                <div className="flex justify-center items-center pt-6 pb-6">
+                    <button
+                        className="flex justify-center"
+                        style={{ marginTop: '10px', 
+                            minWidth: '150px', 
+                            color: 'black',
+                            textAlign: 'center',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            backgroundColor: 'green', 
+                            border: 'none', 
+                            borderRadius: '8px', 
+                            fontSize: '16px',  
+                            cursor: 'pointer'}}
+                        onClick={onCatchClick}
+                    >
+                        Catch!
+                    </button>
                 </div>
             </div>
         </div>
