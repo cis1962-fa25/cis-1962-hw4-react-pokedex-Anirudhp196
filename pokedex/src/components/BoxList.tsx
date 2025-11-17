@@ -2,7 +2,7 @@ import type { BoxEntry, Pokemon } from '../types/types';
 
 function BoxCardPlaceholder() {
     return (
-        <div className="rounded-xl shadow-lg p-6 bg-white border border-gray-200 w-full max-w-xs flex flex-col gap-3 animate-pulse">
+        <div className="rounded-xl shadow-lg p-6 w-full max-w-xs flex flex-col gap-3 animate-pulse text-center flex items-center justify-center">
             <div className="w-24 h-24 bg-gray-200 rounded-full self-center" />
             <div className="h-4 bg-gray-200 rounded w-3/4 self-center" />
             <div className="h-3 bg-gray-200 rounded" />
@@ -14,7 +14,6 @@ function BoxCardPlaceholder() {
 
 import BoxCard from './BoxCard';
 
-// Minimal Pokemon object builder for BoxCard
 const createStubPokemon = (pokemonId: number, pokemonInfo?: { name: string; sprite: string }): Pokemon => ({
     id: pokemonId,
     name: pokemonInfo?.name || `Pokemon #${pokemonId}`,
@@ -50,7 +49,7 @@ function BoxList({ entries, loading, error, pokemonIdMap, onEdit, onDelete }: Bo
     if (loading) {
         return (
             <div className="w-full h-[60vh] flex flex-col items-center justify-center gap-6">
-                <div className="w-12 h-12 border-4 border-green-200 border-t-green-500 rounded-full animate-spin" />
+                <div className="w-12 h-12 border-4 border-green-200 rounded-full animate-spin" />
                 <div className="flex flex-wrap justify-center gap-4">
                     {Array.from({ length: 3 }).map((_, idx) => (
                         <BoxCardPlaceholder key={idx} />

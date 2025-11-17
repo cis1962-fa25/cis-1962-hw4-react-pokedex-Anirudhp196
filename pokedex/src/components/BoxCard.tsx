@@ -23,7 +23,7 @@ function BoxCard({ entry, pokemon, onEdit, onDelete }: BoxCardProps) {
                 <h3 className="text-xl font-semibold capitalize mt-3">{pokemon.name}</h3>
             </div>
 
-            <div className="text-sm text-gray-600 space-y-1">
+            <div className="text-sm text-gray-600 space-y-1 text-center">
                 <p><span className="font-semibold">Location:</span> {entry.location}</p>
                 <p><span className="font-semibold">Level:</span> {entry.level}</p>
                 <p><span className="font-semibold">Caught:</span> {new Date(entry.createdAt).toLocaleString()}</p>

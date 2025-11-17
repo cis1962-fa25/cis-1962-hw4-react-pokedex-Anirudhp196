@@ -2,7 +2,6 @@ import type { PokemonCardProps } from '../types/types';
 
 function PokemonCard({ pokemon, onClick }: PokemonCardProps) {
     const imageUrl = pokemon.sprites.front_default;
-    // Use the first type's color, or default to a neutral color
     const primaryTypeColor = pokemon.types.length > 0 ? pokemon.types[0].color : '#6b7280';
 
     return (
@@ -47,7 +46,6 @@ function PokemonCard({ pokemon, onClick }: PokemonCardProps) {
             <h2 className="text-white capitalize font-bold mt-4 text-center w-full drop-shadow-md">
                 {pokemon.name}
             </h2>
-            {/* Show type badges */}
             {pokemon.types.length > 0 && (
                 <div className="flex gap-1 mt-2 flex-wrap justify-center">
                     {pokemon.types.slice(0, 2).map((type) => (

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import type { InsertBoxEntry, BoxEntry, UpdateBoxEntry } from '../types/types';
+import '../styles/modal.css';
 
 interface BoxFormProps {
     pokemonId: number;
@@ -21,6 +22,7 @@ function BoxForm({ pokemonId, entry, mode = 'create', onSubmit, onCancel, error,
     const [localError, setLocalError] = useState<string | null>(null);
     const [createdAt] = useState(entry?.createdAt ?? new Date().toISOString());
 
+    // From w3 schools modal example
     useEffect(() => {
         const modal = modalRef.current;
         const closeBtn = closeRef.current;

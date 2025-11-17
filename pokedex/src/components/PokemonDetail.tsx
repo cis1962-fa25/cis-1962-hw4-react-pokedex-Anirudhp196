@@ -100,8 +100,7 @@ function PokemonDetail({ pokemon, onClose, onCatch }: PokemonDetailProps) {
                         ))}
                     </div>
                 </div>
-
-                {/* Stats */}
+                
                 <div className="mb-8 grid grid-cols-2 gap-6 pt-6">
                     <div>
                         <h3 className="font-bold text-lg mb-3 text-gray-900">Base Stats</h3>

@@ -28,12 +28,11 @@ function PokemonList() {
     const limit = 20; 
     const api = useMemo(() => new PokemonAPI(), []);
 
-
     useEffect(() => {
         const buildPokemonIdMap = async () => {
             try {
-                const batchLimit = 200;
-                const pokemonList = await api.getPokemonList(batchLimit, 0);
+                const batch = 200;
+                const pokemonList = await api.getPokemonList(batch, 0);
                 const map = new Map<number, { name: string; sprite: string }>();
                 pokemonList.forEach((p) => {
                     map.set(p.id, {
@@ -152,7 +151,6 @@ function PokemonList() {
         <>
         <div className="min-h-screen bg-gray-50 py-8 w-screen">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                {/* Tab Toggle */}
                 <div className="flex justify-center mb-10 mt-4 gap-2">
                     <button
                         className={`px-6 py-2 rounded-t-lg font-bold text-lg transition-all duration-200 border-b-4 ${view === 'pokemon' ? 'bg-white border-blue-500 text-blue-700' : 'bg-gray-100 border-transparent text-gray-500 hover:bg-gray-200'}`}
@@ -195,7 +193,6 @@ function PokemonList() {
                     </div>
                 )}
 
-                {/* Pagination - only show in Pokemon view */}
                 {view === 'pokemon' && (
                     <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', marginTop: '32px' }}>
                     <button
