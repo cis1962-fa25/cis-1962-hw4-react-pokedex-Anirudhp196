@@ -6,6 +6,13 @@ import PokemonDetail from './PokemonDetail';
 import BoxForm from './BoxForm';
 import BoxList from './BoxList';
 
+const getErrorMessage = (error: unknown): string => {
+    if (error instanceof Error) {
+        return error.message;
+    }
+    return typeof error === 'string' ? error : 'Unexpected error';
+};
+
 function PokemonList() {
     const [pokemon, setPokemon] = useState<Pokemon[]>([]);
     const [currentPage, setCurrentPage] = useState(0);
@@ -56,8 +63,8 @@ function PokemonList() {
                 const offset = currentPage * limit;
                 const data = await api.getPokemonList(limit, offset);
                 setPokemon(data);
-            } catch (error: any) {
-                const message = error?.message || 'Unable to load Pokémon right now.';
+            } catch (error: unknown) {
+                const message = getErrorMessage(error) || 'Unable to load Pokémon right now.';
                 setError(message);
             } finally {
                 setLoading(false);
@@ -87,8 +94,8 @@ function PokemonList() {
                 ids.map((id) => api.getBoxEntryById(id))
             );
             setBoxEntries(entries);
-        } catch (error: any) {
-            const msg = error?.message || '';
+        } catch (error: unknown) {
+            const msg = getErrorMessage(error);
             if (msg.includes('401') || msg.toLowerCase().includes('unauthorized')) {
                 setBoxError('Authentication error: Please log in again.');
             } else {
@@ -109,8 +116,8 @@ function PokemonList() {
         try {
             const data = await api.getPokemonByName(name);
             setSelectedPokemon(data);
-        } catch (error: any) {
-            const message = error?.message || 'Unable to load Pokémon details.';
+        } catch (error: unknown) {
+            const message = getErrorMessage(error) || 'Unable to load Pokémon details.';
             setError(message);
         }
     };
@@ -133,8 +140,8 @@ function PokemonList() {
             setEditingEntry(null);
             setBoxFormError(null);
             await fetchBoxEntries();
-        } catch (error: any) {
-            const message = error?.message || '';
+        } catch (error: unknown) {
+            const message = getErrorMessage(error);
             if (message.includes('401')) {
                 setBoxFormError('Authentication error: Please check your token.');
             } else if (message.includes('400')) {
@@ -308,7 +315,7 @@ function PokemonList() {
                             try {
                                 await api.deleteBoxEntry(entryId);
                                 await fetchBoxEntries();
-                            } catch (error) {
+                            } catch {
                                 alert('Failed to delete entry. Please try again.');
                             }
                         }}

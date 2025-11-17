@@ -43,7 +43,7 @@ export default class PokemonAPI {
             const errorText = await response.text();
             throw new Error(`Error fetching box entries (${response.status}): ${response.statusText} - ${errorText}`);
         }
-        const data = await response.json();
+        const data = await response.json() as Array<string | BoxEntry>;
         if (data.length > 0 && typeof data[0] === 'object' && data[0] !== null) {
             return data as BoxEntry[];
         }
@@ -51,19 +51,13 @@ export default class PokemonAPI {
     }
 
     async createBoxEntry(entry: InsertBoxEntry): Promise<BoxEntry> {
-        const cleanedEntry: any = { ...entry };
-        Object.keys(cleanedEntry).forEach(key => {
-            if (cleanedEntry[key] === undefined) {
-                delete cleanedEntry[key];
-            }
-        });
         const response = await fetch(`${this.baseUrl}/box/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${this.jwtToken}`,
             },
-            body: JSON.stringify(cleanedEntry),
+            body: JSON.stringify(entry),
         });
         if(!response.ok) {
             const errorText = await response.text();
