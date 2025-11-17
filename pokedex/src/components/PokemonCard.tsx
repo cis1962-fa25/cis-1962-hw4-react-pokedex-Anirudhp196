@@ -2,18 +2,20 @@ import type { PokemonCardProps } from '../types/types';
 
 function PokemonCard({ pokemon, onClick }: PokemonCardProps) {
     const imageUrl = pokemon.sprites.front_default;
+    // Use the first type's color, or default to a neutral color
+    const primaryTypeColor = pokemon.types.length > 0 ? pokemon.types[0].color : '#6b7280';
 
     return (
         <div
             onClick={onClick}
-            className="cursor-pointer rounded-xl shadow hover:shadow-lg p-6"
+            className="cursor-pointer rounded-xl shadow-lg hover:shadow-xl p-6 transform hover:scale-105 transition-all duration-300"
             style={{ 
                 width: '180px', 
+                minWidth: '180px',
                 flexShrink: 0,
-                backgroundColor: '#305662ff',
+                backgroundColor: primaryTypeColor,
                 borderRadius: '12px',
                 boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                transition: 'box-shadow 0.3s ease',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
@@ -42,15 +44,23 @@ function PokemonCard({ pokemon, onClick }: PokemonCardProps) {
                 }} />
             )}
             
-            <h2 style={{ 
-                textTransform: 'capitalize',
-                fontWeight: '600',
-                marginTop: '16px',
-                textAlign: 'center',
-                width: '100%'
-            }}>
+            <h2 className="text-white capitalize font-bold mt-4 text-center w-full drop-shadow-md">
                 {pokemon.name}
             </h2>
+            {/* Show type badges */}
+            {pokemon.types.length > 0 && (
+                <div className="flex gap-1 mt-2 flex-wrap justify-center">
+                    {pokemon.types.slice(0, 2).map((type) => (
+                        <span
+                            key={type.name}
+                            className="px-2 py-0.5 rounded-full text-xs font-semibold text-white uppercase"
+                            style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}
+                        >
+                            {type.name}
+                        </span>
+                    ))}
+                </div>
+            )}
         </div>
     );
 }

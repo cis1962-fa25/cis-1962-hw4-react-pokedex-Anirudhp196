@@ -33,31 +33,44 @@ export default class PokemonAPI {
 
     // Box Entry Endpoints
 
-    async getBoxEntries() : Promise<string[]> {
+    async getBoxEntries() : Promise<string[] | BoxEntry[]> {
         const response = await fetch(`${this.baseUrl}/box/`, {
             headers: {
                 Authorization: `Bearer ${this.jwtToken}`,
             },
         });
         if(!response.ok) {
-            throw new Error(`Error fetching box entries: ${response.statusText}`);
+            const errorText = await response.text();
+            throw new Error(`Error fetching box entries (${response.status}): ${response.statusText} - ${errorText}`);
         }
-        return response.json();
+        const data = await response.json();
+        if (data.length > 0 && typeof data[0] === 'object' && data[0] !== null) {
+            return data as BoxEntry[];
+        }
+        return data as string[];
     }
 
     async createBoxEntry(entry: InsertBoxEntry): Promise<BoxEntry> {
+        const cleanedEntry: any = { ...entry };
+        Object.keys(cleanedEntry).forEach(key => {
+            if (cleanedEntry[key] === undefined) {
+                delete cleanedEntry[key];
+            }
+        });
         const response = await fetch(`${this.baseUrl}/box/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${this.jwtToken}`,
             },
-            body: JSON.stringify(entry),
+            body: JSON.stringify(cleanedEntry),
         });
         if(!response.ok) {
-            throw new Error(`Error creating box entry: ${response.statusText}`);
+            const errorText = await response.text();
+            throw new Error(`Error creating box entry (${response.status}): ${response.statusText} - ${errorText}`);
         }
-        return response.json();
+        const data = await response.json();
+        return data;
     }
 
     async getBoxEntryById(id: string): Promise<BoxEntry> {
@@ -67,9 +80,11 @@ export default class PokemonAPI {
             },
         });
         if(!response.ok) {
-            throw new Error(`Error fetching box entry: ${response.statusText}`);
+            const errorText = await response.text();
+            throw new Error(`Error fetching box entry (${response.status}): ${response.statusText} - ${errorText}`);
         }
-        return response.json();
+        const data = await response.json();
+        return data;
     }
 
     async updateBoxEntry(id: string, update: UpdateBoxEntry): Promise<BoxEntry> {

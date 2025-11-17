@@ -1,16 +1,27 @@
 import type { Pokemon } from '../types/types';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import '../styles/modal.css';
 
 interface PokemonDetailProps {
     pokemon: Pokemon;
     onClose: () => void;
-    onCatch: (pokemonID: number) => void;
+    onCatch: (pokemonId: number) => void;
 }
 
 function PokemonDetail({ pokemon, onClose, onCatch }: PokemonDetailProps) {
     const modalRef = useRef<HTMLDivElement>(null);
     const closeRef = useRef<HTMLSpanElement>(null);
+    const [isCatching, setIsCatching] = useState(false);
+
+    useEffect(() => {
+        setIsCatching(false);
+    }, [pokemon.id]);
+
+    const onCatchClick = () => {
+        if (isCatching) return;
+        setIsCatching(true);
+        onCatch(pokemon.id);
+    };
 
     useEffect(() => {
         const modal = modalRef.current;
@@ -41,10 +52,6 @@ function PokemonDetail({ pokemon, onClose, onCatch }: PokemonDetailProps) {
             window.onclick = null;
         };
     }, [onClose]);
-
-    const onCatchClick = () => {
-        onCatch(pokemon.id);
-    }
 
     return (
         <div id="pokemonModal" className="modal" ref={modalRef} onClick={(e) => {
@@ -142,10 +149,20 @@ function PokemonDetail({ pokemon, onClose, onCatch }: PokemonDetailProps) {
                             border: 'none', 
                             borderRadius: '8px', 
                             fontSize: '16px',  
-                            cursor: 'pointer'}}
+                            cursor: isCatching ? 'not-allowed' : 'pointer',
+                            opacity: isCatching ? 0.6 : 1,
+                            pointerEvents: isCatching ? 'none' : 'auto'}}
                         onClick={onCatchClick}
+                        disabled={isCatching}
                     >
-                        Catch!
+                        {isCatching ? (
+                            <span className="flex items-center gap-2">
+                                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                Catching...
+                            </span>
+                        ) : (
+                            'Catch!'
+                        )}
                     </button>
                 </div>
             </div>
